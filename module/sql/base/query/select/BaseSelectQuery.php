@@ -330,7 +330,7 @@ class BaseSelectQueryBuilder
 
     private function bindAddOrderArray(array $column)
     {
-        if (isset($column[0][0])) {
+        if (gettype($column[0]) != 'object') {
             if ($this->object->order[0] == [] || empty($this->object->order)) {
                 $this->object->order = $column;
             }
@@ -339,7 +339,7 @@ class BaseSelectQueryBuilder
             }
         }
         else {
-            if ($this->object->order == [] || empty($this->object->order)) {
+            if ($this->object->order[0] == [] || empty($this->object->order)) {
                 $this->object->order[0] = $column;
             }
             else {
@@ -351,6 +351,7 @@ class BaseSelectQueryBuilder
     public function addOrder(string|ColumnOperand|array $column, ?string $type = null): BaseSelectQueryBuilder
     {
         if (gettype($column) == 'array') {
+            echo "build array\r\n";
             $this->bindAddOrderArray($column);
         }
         else {
@@ -364,7 +365,12 @@ class BaseSelectQueryBuilder
                 array_push($result, $type);
             }
 
-            array_push($this->object->order, $result);
+            if ($this->object->order[0] != []) {
+                array_push($this->object->order, $result);
+            }
+            else {
+                $this->object->order = $result;
+            }
         }
 
 

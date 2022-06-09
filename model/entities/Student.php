@@ -422,7 +422,7 @@ class StudentQueryBuilderTable extends BaseQueryBuilderForTable
         $this->baseQueryBuilder = new BaseSelectQueryBuilder(clone $this->baseQueryObject);
     }
 
-    public function joinOverage(?StudentScoreQueryBuilder $builder = null): StudentQueryBuilderTable
+    public function joinAverage(?StudentScoreQueryBuilder $builder = null): StudentQueryBuilderTable
     {
         if (is_null($builder)) {
             $builder = new StudentScoreQueryBuilder();
@@ -483,7 +483,8 @@ $query = new StudentSpecialityQueryBuilderTable();
 $studentQuery = new StudentQueryBuilderTable;
 $studentQuery->setColumns(['firstName', 'lastName']);
 
-echo $studentQuery
-    ->getScoresById(1, ['disciplineName', 'score'])
+echo(new StudentQueryBuilderTable)
+    ->setColumns(['firstName'])
+    ->joinAverage()
     ->getQuery()
     ->render();
