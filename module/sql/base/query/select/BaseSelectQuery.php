@@ -20,7 +20,7 @@ class BaseSelectQuery extends BaseOperand implements ISqlQuery
     public ?BaseLogicalCondition $where = null;
     public array $columns = [];
     public ?BaseOperand $group = null;
-    public array $order = array();
+    public array $order = [[]];
 
     public function __construct(?TableOperand $table = null, array $joins = [], ?BaseLogicalCondition $where = null, array $columns = [])
     {
@@ -37,7 +37,7 @@ class BaseSelectQuery extends BaseOperand implements ISqlQuery
             ? ''
             : ' where ' . $this->where->render()
             ) . ($this->group === null ? '' : ' group by ' . $this->group->render())
-            . ($this->order == [] ? '' : 'order by ' . $this->renderOrder());
+            . ($this->order == [[]] ? '' : 'order by ' . $this->renderOrder());
     }
 
     private function renderOrder(): string

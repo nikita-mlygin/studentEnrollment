@@ -159,7 +159,7 @@ class BaseQueryBuilderForTable
                 ->group($result->group);
         }
 
-        if (!\is_null($result->order)) {
+        if ($result->order != [[]]) {
             $builder->addOrder($result->order);
         }
 
@@ -244,7 +244,7 @@ class StudentScoreQueryBuilder extends BaseQueryBuilderForTable
         return substr($result, 0, -2) . ')';
     }
 
-    public function setGroupOverageScoreQuery(array $disciplineList): StudentScoreQueryBuilder
+    public function setGroupAverageScoreQuery(array $disciplineList): StudentScoreQueryBuilder
     {
         $this->getGroupOverageScoreQueryBuilder($disciplineList);
 
@@ -382,7 +382,7 @@ class StudentSpecialityQueryBuilderTable extends BaseQueryBuilderForTable
             $builder->setColumns($columns);
         }
 
-        $builder->setGroupOverageScoreQuery($disciplineGroup);
+        $builder->setGroupAverageScoreQuery($disciplineGroup);
 
         $this->joinStudentScore($builder);
         return $this;
@@ -421,6 +421,54 @@ class StudentQueryBuilderTable extends BaseQueryBuilderForTable
         $this->baseQueryObject = new BaseSelectQuery($this->table);
         $this->baseQueryBuilder = new BaseSelectQueryBuilder(clone $this->baseQueryObject);
     }
+
+    public function joinOverage(?StudentScoreQueryBuilder $builder = null): StudentQueryBuilderTable
+    {
+        if (is_null($builder)) {
+            $builder = new StudentScoreQueryBuilder();
+        }
+
+        $builder->setAverageGradeQuery()->sort();
+
+        $builder->joinThisTable($this->baseQueryBuilder, 'studentId', $this->columns['id']);
+
+        return $this;
+    }
+
+    public function joinAverageGroup(array $disciplineGroup, ?StudentScoreQueryBuilder $builder): StudentQueryBuilderTable
+    {
+        if (is_null($builder)) {
+            $builder = new StudentScoreQueryBuilder();
+        }
+
+        $builder->setGroupAverageScoreQuery($disciplineGroup)->sort();
+
+        return $this;
+    }
+
+    public function getById(int $id): StudentQueryBuilderTable
+    {
+        $this->baseQueryBuilder->addWhereAnd(new BaseTwoOperandLogicalCondition($this->columns['id'], new PrimitiveTypeOperand($id), '='));
+
+        return $this;
+    }
+
+    public function getScoresById(int $id, array $columns = [], ?StudentScoreQueryBuilder $builder = null): StudentQueryBuilderTable
+    {
+        if (is_null($builder)) {
+            $builder = new StudentScoreQueryBuilder();
+        }
+
+        if ($columns != []) {
+            $builder->setColumns($columns);
+        }
+
+        $this->getById($id);
+
+        $builder->joinThisTable($this->baseQueryBuilder, 'studentId', $this->columns['id']);
+
+        return $this;
+    }
 }
 
 
@@ -435,8 +483,7 @@ $query = new StudentSpecialityQueryBuilderTable();
 $studentQuery = new StudentQueryBuilderTable;
 $studentQuery->setColumns(['firstName', 'lastName']);
 
-echo $query
-    ->joinStudent(['firstName'])
-    ->joinStudentAverageScore()
+echo $studentQuery
+    ->getScoresById(1, ['disciplineName', 'score'])
     ->getQuery()
     ->render();
