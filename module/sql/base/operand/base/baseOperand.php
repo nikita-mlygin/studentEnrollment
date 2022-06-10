@@ -15,6 +15,20 @@ abstract class AliasesBaseOperand extends BaseOperand
 
     public function render(): string
     {
-        return $this->operandRender() . (\is_null($this->alias)?'': " as `$this->alias`");
+        try {
+            return $this->operandRender() . (\is_null($this->alias) ? '' : " as `$this->alias`");
+        }
+        catch (\Throwable $th) {
+            print_r($th);
+            throw $th;
+        }
+
+    }
+
+    public function setAliases(string $alias): AliasesBaseOperand
+    {
+        $this->alias = $alias;
+
+        return $this;
     }
 }

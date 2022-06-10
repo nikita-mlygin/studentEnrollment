@@ -20,7 +20,12 @@ use App\Base\Sql\FunctionOperand;
 use App\Base\Sql\AllColumn;
 use App\Base\Sql\BaseLogicalCondition;
 use App\Base\Sql\PrimitiveTypeOperand;
+use App\Base\Sql\AliasesBaseOperand;
 
+/**
+ * Summary of Student
+ * @property array<string,int> $scores
+ */
 class Student
 {
     public string $firstName;
@@ -106,6 +111,10 @@ class StudentBuilder
 class BaseQueryBuilderForTable
 {
     protected TableOperand $table;
+    /**
+     * Summary of 
+     * @var array{string:BaseOperand}
+     */
     protected array $columns;
     protected BaseSelectQuery $baseQueryObject;
     protected BaseSelectQueryBuilder $baseQueryBuilder;
@@ -115,10 +124,18 @@ class BaseQueryBuilderForTable
         $this->baseQueryBuilder->resetObject(clone $this->baseQueryObject);
     }
 
-    protected function getColumn(string $columnName): ColumnOperand
+    protected function getColumn(string $columnName, ?string $alias = null): ColumnOperand
     {
         if (isset($this->columns[$columnName])) {
-            return $this->columns[$columnName];
+            if (\is_null($alias)) {
+                return $this->columns[$columnName];
+            }
+            else if ($this->columns[$columnName] instanceof AliasesBaseOperand) {
+                return (clone $this->columns[$columnName])->setAliases($alias);
+            }
+            else {
+                throw new \Error("Can't use aliases on non-aliases object");
+            }
         }
 
         throw new \Error('Column not found');
@@ -148,6 +165,12 @@ class BaseQueryBuilderForTable
             ->on($referenceColumnName, $targetColumn, '=')
             ->complete()
             ->addSelectColumns($result->columns);
+
+        if (!\is_null($result->joins)) {
+            foreach ($result->joins as $item) {
+                $builder->join($item);
+            }
+        }
 
         if (!\is_null($result->where)) {
             $builder
@@ -197,26 +220,19 @@ class StudentScoreQueryBuilder extends BaseQueryBuilderForTable
         $this->table = new TableOperand('student_score');
 
         $this->columns = [
-            'studentId' => new ColumnOperand('ref_student_id'),
-            'disciplineName' => new ColumnOperand('student_score_discipline_name'),
-            'score' => new ColumnOperand('student_score')
+            'studentId' => new ColumnOperand('ref_student_id', $this->table),
+            'disciplineName' => new ColumnOperand('student_score_discipline_name', $this->table),
+            'score' => new ColumnOperand('student_score', $this->table),
         ];
 
         $this->baseQueryObject = new BaseSelectQuery($this->table);
         $this->baseQueryBuilder = new BaseSelectQueryBuilder(clone $this->baseQueryObject);
-
-        $disciplineGroups = [ // TODO Перенести куда-нибудь
-            'base' => ['Математика', 'Русский'],
-            'technical' => ['Физика', 'Информатика'],
-            'bio' => ['Химия', 'Биология'],
-            'lala' => ['Обществознание', 'История']
-        ];
     }
 
-    private function getAverageGradeQueryBuilder(): BaseSelectQueryBuilder
+    private function getAverageGradeQueryBuilder(string $alias = 'average'): BaseSelectQueryBuilder
     {
         return $this->baseQueryBuilder
-            ->addSelectColumn(new FunctionOperand('avg', [$this->columns['score']], 'average'))
+            ->addSelectColumn(new FunctionOperand('avg', [$this->columns['score']], $alias))
             ->group($this->columns['studentId']);
     }
 
@@ -227,9 +243,9 @@ class StudentScoreQueryBuilder extends BaseQueryBuilderForTable
         return $this;
     }
 
-    private function getGroupOverageScoreQueryBuilder(array $disciplineList): BaseSelectQueryBuilder
+    private function getGroupOverageScoreQueryBuilder(array $disciplineList, string $alias): BaseSelectQueryBuilder
     {
-        return $this->getAverageGradeQueryBuilder()
+        return $this->getAverageGradeQueryBuilder($alias)
             ->where()->start($this->columns['disciplineName'], new PrimitiveTypeOperand($this->getDisciplineListStr($disciplineList), false), 'in')->complete();
     }
 
@@ -244,9 +260,38 @@ class StudentScoreQueryBuilder extends BaseQueryBuilderForTable
         return substr($result, 0, -2) . ')';
     }
 
-    public function setGroupAverageScoreQuery(array $disciplineList): StudentScoreQueryBuilder
+    public function setGroupAverageScoreQuery(array $disciplineList, string $alias = 'average_group'): StudentScoreQueryBuilder
     {
-        $this->getGroupOverageScoreQueryBuilder($disciplineList);
+        $this->getGroupOverageScoreQueryBuilder($disciplineList, $alias);
+
+        return $this;
+    }
+
+    /**
+     * Sorting by average grade and average group grade
+     * @param string[] $disciplines
+     * @return StudentScoreQueryBuilder
+     */
+    public function setAverageAndGroup(array $disciplines): StudentScoreQueryBuilder
+    {
+        $scoreBaseTable = (clone $this->getColumn('score'))->setTable($this->table);
+        $baseStudentId = (clone $this->getColumn('studentId'))->setTable($this->table);
+        $selectStudentId = (clone $this->getColumn('studentId'))->setTable('avg_select');
+        $avgScoreSelect = new ColumnOperand('average_group', 'avg_select');
+        $avgScore = new ColumnOperand('average');
+
+        $selectQuery = ($this->setGroupAverageScoreQuery($disciplines)->setColumns(['studentId'])->getQuery()->setAliases('avg_select'));
+
+        $this->baseQueryBuilder->select([
+            new FunctionOperand('avg', [$scoreBaseTable], 'average'),
+            $avgScoreSelect
+        ])
+            ->from($this->table)
+            ->join($selectQuery)
+            ->on($baseStudentId, $selectStudentId, '=')
+            ->complete()
+            ->group($baseStudentId)
+            ->addOrder([[$avgScore, 'desc'], [$avgScoreSelect, 'desc']]);
 
         return $this;
     }
@@ -281,10 +326,10 @@ class SpecialityQueryBuilderTable extends BaseQueryBuilderForTable
 
         $this->columns =
         [
-            'id' => new ColumnOperand('speciality_id'),
-            'name' => new ColumnOperand('speciality_name'),
-            'description' => new ColumnOperand('speciality_description'),
-            'direction' => new ColumnOperand('speciality_direction'),
+            'id' => new ColumnOperand('speciality_id', $this->table),
+            'name' => new ColumnOperand('speciality_name', $this->table),
+            'description' => new ColumnOperand('speciality_description', $this->table),
+            'direction' => new ColumnOperand('speciality_direction', $this->table),
         ];
 
 
@@ -306,9 +351,9 @@ class StudentSpecialityQueryBuilderTable extends BaseQueryBuilderForTable
 
         $this->columns =
         [
-            'studentId' => new ColumnOperand('ref_student_speciality_student_id'),
-            'specialityId' => new ColumnOperand('ref_student_speciality_speciality_id'),
-            'priority' => new ColumnOperand('student_speciality_priority'),
+            'studentId' => new ColumnOperand('ref_student_speciality_student_id', $this->table),
+            'specialityId' => new ColumnOperand('ref_student_speciality_speciality_id', $this->table),
+            'priority' => new ColumnOperand('student_speciality_priority', $this->table),
         ];
 
 
@@ -410,16 +455,23 @@ class StudentQueryBuilderTable extends BaseQueryBuilderForTable
         $this->table = new TableOperand('student');
         $this->columns =
         [
-            'id' => new ColumnOperand('student_id'),
-            'firstName' => new ColumnOperand('student_first_name'),
-            'lastName' => new ColumnOperand('student_last_name'),
-            'patronymic' => new ColumnOperand('student_patronymic'),
-            'certificate' => new ColumnOperand('student_certificate'),
-            'groupId' => new ColumnOperand('ref_student_group_id'),
+            'id' => new ColumnOperand('student_id', $this->table),
+            'firstName' => new ColumnOperand('student_first_name', $this->table),
+            'lastName' => new ColumnOperand('student_last_name', $this->table),
+            'patronymic' => new ColumnOperand('student_patronymic', $this->table),
+            'certificate' => new ColumnOperand('student_certificate', $this->table),
+            'groupId' => new ColumnOperand('ref_student_group_id', $this->table),
         ];
 
         $this->baseQueryObject = new BaseSelectQuery($this->table);
         $this->baseQueryBuilder = new BaseSelectQueryBuilder(clone $this->baseQueryObject);
+    }
+
+    public function joinScores(StudentScoreQueryBuilder $builder): StudentQueryBuilderTable
+    {
+        $builder->joinThisTable($this->baseQueryBuilder, 'studentId', $this->columns['id']);
+
+        return $this;
     }
 
     public function joinAverage(?StudentScoreQueryBuilder $builder = null): StudentQueryBuilderTable
@@ -446,7 +498,7 @@ class StudentQueryBuilderTable extends BaseQueryBuilderForTable
         return $this;
     }
 
-    public function getById(int $id): StudentQueryBuilderTable
+    public function filterById(int|array $id): StudentQueryBuilderTable
     {
         $this->baseQueryBuilder->addWhereAnd(new BaseTwoOperandLogicalCondition($this->columns['id'], new PrimitiveTypeOperand($id), '='));
 
@@ -463,9 +515,38 @@ class StudentQueryBuilderTable extends BaseQueryBuilderForTable
             $builder->setColumns($columns);
         }
 
-        $this->getById($id);
+        $this->filterById($id);
 
         $builder->joinThisTable($this->baseQueryBuilder, 'studentId', $this->columns['id']);
+
+        return $this;
+    }
+
+    /**
+     * Summary of getStudentsInSpeciality
+     * @param int $specialityId
+     * @param array{joinAverageScore:bool,scoreBuilder:StudentScoreQueryBuilder,disciplineGroup:array<string>} $settings
+     * @return StudentQueryBuilderTable
+     */
+    public function getStudentsInSpeciality(int $specialityId, array $settings): StudentQueryBuilderTable
+    {
+        $specialityId; // TODO
+
+        if (isset($settings['joinAverageScore'])) {
+            if (!isset($settings['averageScoreBuilder'])) {
+                $builder = new StudentScoreQueryBuilder();
+            }
+            else {
+                $builder = $settings['averageScoreBuilder'];
+            }
+
+            if (isset($settings['averageScoreBuilder'])) {
+                $builder->setGroupAverageScoreQuery($settings['scoreBuilder']);
+            }
+            else {
+                $builder->setAverageGradeQuery();
+            }
+        }
 
         return $this;
     }
@@ -483,8 +564,7 @@ $query = new StudentSpecialityQueryBuilderTable();
 $studentQuery = new StudentQueryBuilderTable;
 $studentQuery->setColumns(['firstName', 'lastName']);
 
-echo(new StudentQueryBuilderTable)
-    ->setColumns(['firstName'])
-    ->joinAverage()
-    ->getQuery()
-    ->render();
+$query = (new StudentScoreQueryBuilder())
+    ->setAverageAndGroup(['Математика', 'Русский']);
+
+echo $studentQuery->joinScores($query)->getQuery()->render();

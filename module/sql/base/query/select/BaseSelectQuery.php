@@ -10,7 +10,7 @@ require_once __DIR__ . '/../../operand/base/baseOperand.php';
 require_once __DIR__ . '/../../operand/column/function.php';
 require_once __DIR__ . '/../../operand/column/allColumn.php';
 
-class BaseSelectQuery extends BaseOperand implements ISqlQuery
+class BaseSelectQuery extends AliasesBaseOperand implements ISqlQuery
 {
     public ?TableOperand $table;
     /**
@@ -22,15 +22,17 @@ class BaseSelectQuery extends BaseOperand implements ISqlQuery
     public ?BaseOperand $group = null;
     public array $order = [[]];
 
-    public function __construct(?TableOperand $table = null, array $joins = [], ?BaseLogicalCondition $where = null, array $columns = [])
+    public function __construct(?TableOperand $table = null, array $joins = [], ?BaseLogicalCondition $where = null, array $columns = [], ?string $alias = null)
     {
         $this->table = $table;
         $this->joins = $joins;
         $this->where = $where;
         $this->columns = $columns;
+
+        $this->alias = $alias;
     }
 
-    public function render(): string
+    protected function operandRender(): string
     {
         return 'select ' . $this->columnsRender() . '  from ' . $this->table->render() . ' ' . $this->joinRender() .
             ($this->where === null
@@ -38,6 +40,11 @@ class BaseSelectQuery extends BaseOperand implements ISqlQuery
             : ' where ' . $this->where->render()
             ) . ($this->group === null ? '' : ' group by ' . $this->group->render())
             . ($this->order == [[]] ? '' : 'order by ' . $this->renderOrder());
+    }
+
+    public function render(): string
+    {
+        return (is_null($this->alias)) ? $this->operandRender() : '(' . $this->operandRender() . ') as ' . $this->alias;
     }
 
     private function renderOrder(): string
@@ -241,7 +248,7 @@ abstract class BaseSelectWhereConditionBuilder extends BaseSelectQueryBuilder im
         return $this->selectQueryBuilder->complete();
     }
 
-    function start(string|BaseOperand $left, string|BaseOperand $right, string $operator)
+    function start(string|BaseOperand $left, int|string|BaseOperand $right, string $operator)
     {
         $this->selectQueryBuilder->start($left, $right, $operator);
 
@@ -351,7 +358,6 @@ class BaseSelectQueryBuilder
     public function addOrder(string|ColumnOperand|array $column, ?string $type = null): BaseSelectQueryBuilder
     {
         if (gettype($column) == 'array') {
-            echo "build array\r\n";
             $this->bindAddOrderArray($column);
         }
         else {
@@ -417,9 +423,9 @@ class BaseSelectQueryBuilder
         return $this;
     }
 
-    public function from(string $tableName, ?string $databaseName = null): BaseSelectQueryBuilder
+    public function from(string|TableOperand $tableName, ?string $databaseName = null): BaseSelectQueryBuilder
     {
-        $this->object->table = new TableOperand($tableName, $databaseName = null);
+        $this->object->table = gettype($tableName) == 'string' ? new TableOperand($tableName, $databaseName = null) : $tableName;
 
         return $this;
     }
@@ -435,11 +441,16 @@ class BaseSelectQueryBuilder
 
         switch (\func_num_args()) {
             case 1:
-                array_push($this->object->joins, new Join
-                    (
-                    gettype($args[0]) == 'string' ? new TableOperand($args[0]) : $args[0]
-                    )
-                );
+                if ($args[0] instanceof Join) {
+                    array_push($this->object->joins, $args[0]);
+                }
+                else {
+                    array_push($this->object->joins, new Join
+                        (
+                        gettype($args[0]) == 'string' ? new TableOperand($args[0]) : $args[0]
+                        ));
+                }
+
                 break;
             case 2:
                 array_push($this->object->joins, new Join($args[0], $args[1]));

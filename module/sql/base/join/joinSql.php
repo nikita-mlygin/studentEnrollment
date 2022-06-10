@@ -8,7 +8,7 @@ require_once __DIR__ . "/../operand/table/table.php";
 class Join
 {
     public ?string $joinType = null;
-    public TableOperand $joinTable;
+    public TableOperand|BaseSelectQuery $joinTable;
     public ?BaseLogicalCondition $joinCondition = null;
 
     public function __construct()
@@ -16,43 +16,31 @@ class Join
         $paramCount = \func_num_args();
         $paramArray = \func_get_args();
 
-        if($paramCount == 2)
-        {
-            if(gettype($paramArray[0]) == 'string' && $paramArray[1] instanceof TableOperand)
-            {
-                $this->joinType = $paramArray[0];
-                $this->joinTable = $paramArray[1];
-            } else if($paramArray[0] instanceof TableOperand && $paramArray[1] instanceof BaseLogicalCondition)
-            {
-                $this->joinTable = $paramArray[0];
-                $this->joinCondition = $paramArray[1];
-            } else
-            {
-                throw new \Error('Неправильные типы переданных параметров в функцию');
-            }
-        } else if($paramCount == 3)
-        {
-            if(gettype($paramArray[0]) == 'string' && $paramArray[1] instanceof TableOperand && $paramArray[2] instanceof BaseLogicalCondition)
-            {
-                $this->joinType = $paramArray[0];
-                $this->joinTable = $paramArray[1];
-                $this->joinCondition = $paramArray[2];
-            } else
-            {
-                throw new \Error('Неправильные типы переданных параметров в функцию');
-            }
-        } else if($paramCount == 1)
-        {
-            if($paramArray[0] instanceof TableOperand)
-            {
-                $this->joinTable = $paramArray[0];
-            } else
-            {
-                throw new \Error('Неправильные типы переданных параметров в функцию');
-            }
-        } else
-        {
-            throw new \Error('Неверное количество параметров, переданных в функцию');
+        switch ($paramCount) {
+            case 2:
+                if (gettype($paramArray[0]) == 'string' && $paramArray[1] instanceof TableOperand) {
+                    $this->joinType = $paramArray[0];
+                    $this->joinTable = $paramArray[1];
+                }
+                else if (($paramArray[0] instanceof TableOperand || $paramArray[0] instanceof BaseSelectQuery) && $paramArray[1] instanceof BaseLogicalCondition) {
+                    $this->joinTable = $paramArray[0];
+                    $this->joinCondition = $paramArray[1];
+                }
+                break;
+            case 3:
+                if (gettype($paramArray[0]) == 'string' && $paramArray[1] instanceof TableOperand && $paramArray[2] instanceof BaseLogicalCondition) {
+                    $this->joinType = $paramArray[0];
+                    $this->joinTable = $paramArray[1];
+                    $this->joinCondition = $paramArray[2];
+                }
+                break;
+            case 1:
+                if ($paramArray[0] instanceof TableOperand || $paramArray[0] instanceof BaseSelectQuery) {
+                    $this->joinTable = $paramArray[0];
+                }
+                break;
+            default:
+                throw new \Error('Params count must be 3');
         }
     }
 
@@ -63,11 +51,11 @@ class Join
 
     public function render(): string
     {
-        return 
-            ($this->joinType === null ? '' : ($this->joinType . ' ')) 
-            . 'join ' . $this->joinTable->render() 
+        return
+            ($this->joinType === null ? '' : ($this->joinType . ' '))
+            . 'join ' . $this->joinTable->render()
             . ($this->joinCondition !== null
-                ? (' on ' . $this->joinCondition->render())
-                : '');
+            ? (' on ' . $this->joinCondition->render())
+            : '');
     }
 }

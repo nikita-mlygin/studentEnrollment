@@ -10,14 +10,14 @@ class PrimitiveTypeOperand extends BaseOperand
     private mixed $operand;
     private bool $needQuotes;
 
-    public function __construct(mixed $operand, ?bool $needQuotes = null)
+    public function __construct(int|string $operand, ?bool $needQuotes = null)
     {
         $this->operand = $operand;
-        $this->needQuotes = $needQuotes === null?gettype($operand) != 'integer':$needQuotes;
+        $this->needQuotes = $needQuotes === null ? gettype($operand) != 'integer' : $needQuotes;
     }
 
     public function render(): string
     {
-        return $this->needQuotes?"'$this->operand'":(string)$this->operand;
+        return $this->needQuotes ? "'$this->operand'" : (string)$this->operand;
     }
 }
