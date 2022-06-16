@@ -78,7 +78,7 @@ class StudentBuilder
 
     public function scores(string $disciplineName, int $score): StudentBuilder
     {
-        $this->scores[$disciplineName] = $score;
+        $this->buildObj->scores[$disciplineName] = $score;
 
         return $this;
     }
@@ -567,4 +567,4 @@ $studentQuery->setColumns(['firstName', 'lastName']);
 $query = (new StudentScoreQueryBuilder())
     ->setAverageAndGroup(['Математика', 'Русский']);
 
-echo $studentQuery->joinScores($query)->getQuery()->render();
+// echo $studentQuery->joinScores($query)->getQuery()->render();

@@ -2,10 +2,9 @@
 
 namespace App\Base\Controller;
 
-use App\Base\Model;
 
-require_once __DIR__.'/IController.php';
-require_once __DIR__.'/../../model/base/IModel.php';
+require_once __DIR__ . '/IController.php';
+require_once __DIR__ . '/../../model/base/IModel.php';
 
 abstract class BaseController implements IController
 {
@@ -15,7 +14,7 @@ abstract class BaseController implements IController
     }
 
     protected string $path = modelDir;
-    protected IModel $model;
+    protected \App\Base\Model\IModel $model;
     protected array $modelFiles;
 
     abstract function runAction(string $actionName);
@@ -23,12 +22,11 @@ abstract class BaseController implements IController
 
     function includeModelFile(string $modelName = 'default')
     {
-        if(isset($this->modelFiles[$modelName]))
-        {
+        if (isset($this->modelFiles[$modelName])) {
             require_once $this->path . '/' . $this->modelFiles[$modelName];
-        } else
-        {
-            throw new \Error('Model not found: $this->path . '/' . $this->modelFiles[$modelName]');
+        }
+        else {
+            throw new \Error('Model not found: $this->path . ' / ' . $this->modelFiles[$modelName]');
         }
     }
 }

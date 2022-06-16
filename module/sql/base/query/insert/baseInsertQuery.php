@@ -8,10 +8,9 @@ require_once __DIR__ . '/../../operand/primitive/primitiveTypeOperand.php';
 require_once __DIR__ . '/../../operand/table/table.php';
 require_once __DIR__ . '/../../operand/base/baseOperand.php';
 
-/**
+/** @phpstan-consistent-constructor
  * @property ColumnOperand[] $columns
- * @property array<array<PrimitiveTypeOperand>> $values
-*/
+ * @property array<array<PrimitiveTypeOperand>> $values */
 class BaseInsertQuery implements ISqlQuery
 {
     public TableOperand $table;
@@ -53,7 +52,7 @@ class BaseInsertQuery implements ISqlQuery
 
     static public function create()
     {
-        return new BaseInsertQueryBuilder(new static);
+        return new BaseInsertQueryBuilder(new static );
     }
 }
 
@@ -76,7 +75,7 @@ class BaseInsertQueryBuilder
     public function bindColumn(string|ColumnOperand $column): BaseInsertQueryBuilder
     {
         array_push($this->object->columns, gettype($column) == 'string' ? new ColumnOperand($column) : $column);
-        
+
         return $this;
     }
 
@@ -88,7 +87,7 @@ class BaseInsertQueryBuilder
         foreach ($values as $item) {
             array_push($this->object->values[$lastIndx], $item instanceof BaseOperand ? $item : new PrimitiveTypeOperand($item));
         }
-        
+
         return $this;
     }
 

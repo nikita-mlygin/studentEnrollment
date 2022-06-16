@@ -6,13 +6,23 @@ require_once __DIR__ . '/../controller/base/IController.php';
 
 use App\Base\Controller\IController;
 use App\Base\Model\IModel;
+use App\Base\Module\IModule;
 
-class App
+final class App
 {
+    /**
+     * @var string[] $requestUrl
+     */
     private array $requestUrl = [];
+    /**
+     * @var array<string,string> $controllersFiles
+     */
     private array $controllersFiles = [];
-    private IController $controller;
 
+    private IController $controller;
+    /**
+     * @var array<string,array{initF:callable-string,file:string,included:bool}> $moduleList
+     */
     private array $moduleList = [];
 
     static private ?App $instance = null;
@@ -52,7 +62,7 @@ class App
         }
     }
 
-    public function getModule(string $moduleName)
+    public function getModule(string $moduleName): IModule
     {
         if (isset($this->moduleList[$moduleName])) {
             if (!isset($this->moduleList[$moduleName]['included'])) {

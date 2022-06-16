@@ -2,7 +2,7 @@
 
 namespace App\Base\Module;
 
-require_once __DIR__.'/IModule.php';
+require_once __DIR__ . '/IModule.php';
 
 abstract class BaseModule implements IModule
 {
@@ -10,9 +10,8 @@ abstract class BaseModule implements IModule
 
     public static function getInstance(): BaseModule
     {
-        if(static::$instance == null)
-        {
-            static::$instance = new static();
+        if (static::$instance == null) {
+            static::$instance = new static ();
         }
 
         return static::$instance;

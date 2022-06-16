@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
+
+.window {
+    box-shadow: 0 0 20px 0px black;
+    background-color: white;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-left: 20px;
+    box-sizing: border-box;
+    border-radius: 30px;
+}
+
+.header {
+    padding: 20px 0 0 0;
+    text-align: center;
+}
+
+.subTitle {
+    background-clip: text;
+    font-size: 3em;
+    font-family: 'Lato', sans-serif;
+    font-weight: 800;
+    color: rgba(32, 191, 85, 1);
+    background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.formNavbar
+{
+    margin: 20px auto 0 auto;
+    width: 500px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-around;
+
+    &__elm
+    {
+        display: block;
+        text-decoration: none; 
+    }
+
+    &__elm:hover &__line
+    {
+        width: 100%; 
+    }
+    &__elm:hover>&__text
+    {
+        text-shadow: 0 0 1px grey;
+    }
+
+    &__text
+    {
+        transition: 0.3;
+        color: black;
+        font-family: 'PT Mono', monospace;
+        font-size: 1.4em;
+        line-height: 1.5em;
+
+        &::before
+        {
+            content: "";
+            opacity: 0;
+        }
+    }
+
+    &__line
+    {
+        transition: 0.5s;
+        display: block;
+        border: 0;
+        width: 80%;
+        height: 4px;
+        background: #c8f4bd;
+        margin: 0 auto;
+
+        &__container
+        {
+            position: relative;
+            overflow-x: hidden;
+        }
+    
+        &_active
+        {
+            border: 0;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            height: 4px;
+            margin: 0;
+            background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
+        
+            &_0 {
+
+                    animation: formNavbar__line_active 0.5s forwards;
+                }
+            
+            &_1 {
+
+                animation: formNavbar__line_active 0.5s forwards;
+                animation-direction: reverse;
+            }
+        }
+    }
+}
+
+@keyframes formNavbar__line_active {
+    form {
+        width: 100%;
+        left: 0;
+    }
+
+    to {
+        width: 0;
+        left: 50%;
+    }
+}
+
+@keyframes titledInput__text_active
+{
+    from {
+        top: calc(1em);
+        font-size: 1.2em;
+        color: black;
+    }
+
+    to {
+        font-size: 1em;
+        top: 4px;
+        width: auto;
+        color: rgb(90, 90, 90);
+    }
+}
+
+@keyframes titledInput__text_notActive {
+    from {
+        font-size: 1em;
+        top: 4px;
+        width: auto;
+    }
+
+    to {
+        top: calc(1em);
+        font-size: 1.2em;
+    }
+}
+
+body
+{
+    background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
+}
+
+.names
+{
+    margin-top: 25px;
+
+    &__inputContainer
+    {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-right: 20px;
+    }
+    
+}
+
+.titledInput {
+    overflow: hidden;
+    display: inline-flex;
+    flex-direction: column;
+    border-radius: 5px 5px 0 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    position: relative;
+    background-color: #e4e4e4;
+    margin: 25px auto;
+    width: 90%;
+
+
+    &__text
+    {
+        font-family: 'Lora';
+        animation: titledInput__text_notActive 0.5s  forwards;
+        position: absolute;
+        background-color: transparent;
+        left: 13px;
+        pointer-events: none;
+
+        &_active
+        {
+            animation: 0.5s forwards;
+            animation-name: titledInput__text_active;
+        }
+    }
+
+    &__input {
+        font-family: 'Lora';
+        outline: 0;
+        overflow: hidden;
+        box-sizing: border-box;
+        transition: 0.3s;
+        padding: 25px 3px 3px 12px;
+        padding-top: 25px;
+        border: 0;
+        border-bottom: 4px solid #a9eb98;
+        background-color: #e4e4e4;
+        font-size: 1.1em;
+    }
+
+    &:hover>&__input {
+        background-color: #d9f3d2;
+    }
+
+    &__input
+    {
+        &:focus-visible {
+            outline: 0;
+            border: 0;
+            background-color: #c8f4bd !important;
+            border-bottom: 4px solid #40bf20;
+        }
+
+        &:focus {
+            outline: 0;
+            border: 0;
+            background-color: #c8f4bd !important;
+            border-bottom: 4px solid #40bf20;
+        }
+    }
+}
+
+.titledInputWithPrompt {
+    border-radius: 5px;
+
+    &__promptElement
+    {
+        &::after
+        {
+            display: block;
+            content: "";
+            height: 1px;
+            background-color: #e4e4e4;
+            margin: 6px 0;
+        }
+
+        &:last-child::after{
+            display: none;
+        }
+    }
+
+    &__promptContainer
+    {
+        margin: 0;
+        padding-left: 12px;
+        box-sizing: border-box;
+        list-style-type: none;
+    }
+}
+
+.group__title
+{
+    font-family: 'Limelight', cursive;
+    font-size: 1.5em;
+    padding-left: 30px;
+}

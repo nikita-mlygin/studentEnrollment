@@ -1,0 +1,294 @@
+@import url("https://fonts.googleapis.com/css2?family=Limelight&display=swap");
+.window {
+  -webkit-box-shadow: 0 0 20px 0px black;
+          box-shadow: 0 0 20px 0px black;
+  background-color: white;
+  max-width: 600px;
+  margin: 0 auto;
+  padding-left: 20px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 30px;
+}
+
+.header {
+  padding: 20px 0 0 0;
+  text-align: center;
+}
+
+.subTitle {
+  background-clip: text;
+  font-size: 3em;
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  color: #20bf55;
+  background: linear-gradient(151deg, #20bf55 50%, #01efbc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.formNavbar {
+  margin: 20px auto 0 auto;
+  width: 500px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 1fr;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+.formNavbar__elm {
+  display: block;
+  text-decoration: none;
+}
+
+.formNavbar__elm:hover .formNavbar__line {
+  width: 100%;
+}
+
+.formNavbar__elm:hover > .formNavbar__text {
+  text-shadow: 0 0 1px grey;
+}
+
+.formNavbar__text {
+  -webkit-transition: 0.3;
+  transition: 0.3;
+  color: black;
+  font-family: 'PT Mono', monospace;
+  font-size: 1.4em;
+  line-height: 1.5em;
+}
+
+.formNavbar__text::before {
+  content: "";
+  opacity: 0;
+}
+
+.formNavbar__line {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  display: block;
+  border: 0;
+  width: 80%;
+  height: 4px;
+  background: #c8f4bd;
+  margin: 0 auto;
+}
+
+.formNavbar__line__container {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.formNavbar__line_active {
+  border: 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 4px;
+  margin: 0;
+  background: linear-gradient(151deg, #20bf55 50%, #01efbc 100%);
+}
+
+.formNavbar__line_active_0 {
+  -webkit-animation: formNavbar__line_active 0.5s forwards;
+          animation: formNavbar__line_active 0.5s forwards;
+}
+
+.formNavbar__line_active_1 {
+  -webkit-animation: formNavbar__line_active 0.5s forwards;
+          animation: formNavbar__line_active 0.5s forwards;
+  animation-direction: reverse;
+}
+
+@-webkit-keyframes formNavbar__line_active {
+  form {
+    width: 100%;
+    left: 0;
+  }
+  to {
+    width: 0;
+    left: 50%;
+  }
+}
+
+@keyframes formNavbar__line_active {
+  form {
+    width: 100%;
+    left: 0;
+  }
+  to {
+    width: 0;
+    left: 50%;
+  }
+}
+
+@-webkit-keyframes titledInput__text_active {
+  from {
+    top: calc(1em);
+    font-size: 1.2em;
+    color: black;
+  }
+  to {
+    font-size: 1em;
+    top: 4px;
+    width: auto;
+    color: #5a5a5a;
+  }
+}
+
+@keyframes titledInput__text_active {
+  from {
+    top: calc(1em);
+    font-size: 1.2em;
+    color: black;
+  }
+  to {
+    font-size: 1em;
+    top: 4px;
+    width: auto;
+    color: #5a5a5a;
+  }
+}
+
+@-webkit-keyframes titledInput__text_notActive {
+  from {
+    font-size: 1em;
+    top: 4px;
+    width: auto;
+  }
+  to {
+    top: calc(1em);
+    font-size: 1.2em;
+  }
+}
+
+@keyframes titledInput__text_notActive {
+  from {
+    font-size: 1em;
+    top: 4px;
+    width: auto;
+  }
+  to {
+    top: calc(1em);
+    font-size: 1.2em;
+  }
+}
+
+body {
+  background: linear-gradient(151deg, #20bf55 50%, #01efbc 100%);
+}
+
+.names {
+  margin-top: 25px;
+}
+
+.names__inputContainer {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+      grid-template-columns: repeat(3, 1fr);
+  margin-right: 20px;
+}
+
+.titledInput {
+  overflow: hidden;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  border-radius: 5px 5px 0 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  overflow-x: hidden;
+  position: relative;
+  background-color: #e4e4e4;
+  margin: 25px auto;
+  width: 90%;
+}
+
+.titledInput__text {
+  font-family: 'Lora';
+  -webkit-animation: titledInput__text_notActive 0.5s  forwards;
+          animation: titledInput__text_notActive 0.5s  forwards;
+  position: absolute;
+  background-color: transparent;
+  left: 13px;
+  pointer-events: none;
+}
+
+.titledInput__text_active {
+  -webkit-animation: 0.5s forwards;
+          animation: 0.5s forwards;
+  -webkit-animation-name: titledInput__text_active;
+          animation-name: titledInput__text_active;
+}
+
+.titledInput__input {
+  font-family: 'Lora';
+  outline: 0;
+  overflow: hidden;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  padding: 25px 3px 3px 12px;
+  padding-top: 25px;
+  border: 0;
+  border-bottom: 4px solid #a9eb98;
+  background-color: #e4e4e4;
+  font-size: 1.1em;
+}
+
+.titledInput:hover > .titledInput__input {
+  background-color: #d9f3d2;
+}
+
+.titledInput__input:focus-visible {
+  outline: 0;
+  border: 0;
+  background-color: #c8f4bd !important;
+  border-bottom: 4px solid #40bf20;
+}
+
+.titledInput__input:focus {
+  outline: 0;
+  border: 0;
+  background-color: #c8f4bd !important;
+  border-bottom: 4px solid #40bf20;
+}
+
+.titledInputWithPrompt {
+  border-radius: 5px;
+}
+
+.titledInputWithPrompt__promptElement::after {
+  display: block;
+  content: "";
+  height: 1px;
+  background-color: #e4e4e4;
+  margin: 6px 0;
+}
+
+.titledInputWithPrompt__promptElement:last-child::after {
+  display: none;
+}
+
+.titledInputWithPrompt__promptContainer {
+  margin: 0;
+  padding-left: 12px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  list-style-type: none;
+}
+
+.group__title {
+  font-family: 'Limelight', cursive;
+  font-size: 1.5em;
+  padding-left: 30px;
+}
+/*# sourceMappingURL=style.css.map */

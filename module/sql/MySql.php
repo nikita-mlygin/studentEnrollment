@@ -25,6 +25,11 @@ class MySqlModule extends BaseModule
 
     private \PDO $connection;
 
+    public function __construct()
+    {
+    // Need for implementation
+    }
+
     public function init(): void
     {
         $settings = include configDir . '/database.php';

@@ -9,15 +9,17 @@ class StudentView extends BaseView
 {
     function viewAddForm()
     {
-        $this->includeViewFile('addForm'); 
+        $this->includeViewFile('addForm');
     }
 
-	function viewDefault(): void {
-	}
-	
-    
-	function __construct()
+    function viewDefault(): void
+    {
+    //TODO
+    }
+
+
+    function __construct()
     {
         parent::__construct(__DIR__, ['addForm' => 'addForm.php']);
-	}
+    }
 }
