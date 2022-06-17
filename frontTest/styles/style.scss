@@ -1,20 +1,29 @@
 @import url('https://fonts.googleapis.com/css2?family=Limelight&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
 
 @use "sass:math";
 
 $textColor: rgb(17, 17, 17);
-$delimiterColor_1: #8a8a8a;
-$delimiterColor_2: #d4d4d4;
+$delimiterColor_1: #808080;
+$delimiterColor_2: #d1d1d1;
+$delimiterColor_3: #a0a0a0;
+$delimiterColor_4: #666666;
+$delimiterColor_5: #d4d4d4;
+
+$mainColor_1: rgba(32, 191, 85, 1);
 
 .window {
-    box-shadow: 0 0 20px 0px black;
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.255);
     background-color: white;
     max-width: 600px;
     margin: 0 auto;
     padding-left: 20px;
     box-sizing: border-box;
-    border-radius: 30px;
+    margin-top: 20px;
+    overflow: auto;
+    //border-radius: 30px;
 
     &__viewStudent {
         max-width: 80%;
@@ -36,76 +45,6 @@ $delimiterColor_2: #d4d4d4;
     background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-}
-
-.formNavbar {
-    margin: 20px auto 0 auto;
-    width: 500px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    justify-content: space-around;
-
-    &__elm {
-        display: block;
-        text-decoration: none;
-    }
-
-    &__elm:hover &__line {
-        width: 100%;
-    }
-
-    &__elm:hover>&__text {
-        text-shadow: -1px -1px 0px rgb(49, 49, 49);
-    }
-
-    &__text {
-        transition: 0.3s;
-        color: black;
-        font-family: 'PT Mono', monospace;
-        font-size: 2em;
-        line-height: 1.5em;
-
-        &::before {
-            content: "";
-            opacity: 0;
-        }
-    }
-
-    &__line {
-        transition: 0.5s;
-        display: block;
-        border: 0;
-        width: 80%;
-        height: 4px;
-        background: #c8f4bd;
-        margin: 0 auto;
-
-        &__container {
-            position: relative;
-            overflow-x: hidden;
-        }
-
-        &_active {
-            border: 0;
-            position: absolute;
-            width: 100%;
-            left: 0;
-            height: 4px;
-            margin: 0;
-            background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
-
-            &_0 {
-
-                animation: formNavbar__line_active 0.5s forwards;
-            }
-
-            &_1 {
-
-                animation: formNavbar__line_active 0.5s forwards;
-                animation-direction: reverse;
-            }
-        }
-    }
 }
 
 @keyframes formNavbar__line_active {
@@ -145,7 +84,7 @@ $delimiterColor_2: #d4d4d4;
 }
 
 body {
-    background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
+    background: #00000034;
 }
 
 .names {
@@ -159,26 +98,23 @@ body {
 
 }
 
-.input {
-    flex-direction: column;
+.myInput {
     border-radius: 5px 5px 0 0;
     box-sizing: border-box;
     overflow-x: hidden;
     position: relative;
-    background-color: #e4e4e4;
-    margin: 25px auto;
-    font-size: 1.5em;
-    display: inline-block;
-    width: 90%;
+    background-color: transparent;
 
     &__container {
         overflow: hidden;
+        width: 100%;
         display: inline-flex;
         position: relative;
         border-radius: 5px 5px 0 0;
     }
 
     &__input {
+        width: 100%;
         font-family: 'Lora';
         outline: 0;
         overflow: hidden;
@@ -186,32 +122,32 @@ body {
         padding: 25px 3px 12px 12px;
         padding-top: calc(0.7em + 10px);
         border: 0;
-        border-bottom: 4px solid #a9eb98;
-        background-color: #e4e4e4;
+        border-bottom: 4px solid $delimiterColor_2;
+        background-color: transparent;
         font-size: 1em;
         width: 100%;
         height: 1em;
         display: block;
+        box-sizing: content-box;
     }
 
     &:hover>*>&__input {
-        background-color: #d9f3d2;
+        background-color: #d9f3d28f;
+    }
+&__input {
+    &:focus-visible {
+        outline: 0;
+        border: 0;
+        background-color: #c8f4bdaf !important;
+        border-bottom: 4px solid $mainColor_1;
     }
 
-    &__input {
-        &:focus-visible {
-            outline: 0;
-            border: 0;
-            background-color: #c8f4bd !important;
-            border-bottom: 4px solid #40bf20;
-        }
-
-        &:focus {
-            outline: 0;
-            border: 0;
-            background-color: #c8f4bd !important;
-            border-bottom: 4px solid #40bf20;
-        }
+    &:focus {
+        outline: 0;
+        border: 0;
+        background-color: #c8f4bdaf !important;
+        border-bottom: 4px solid $mainColor_1;
+    }
     }
 }
 
@@ -269,10 +205,6 @@ body {
 }
 
 .studentContactTable {
-    &__container {}
-
-    &__elm {}
-
     &__elmHeader {
         position: relative;
 
@@ -323,8 +255,6 @@ body {
     $leftElmMargin: 25px;
 
     margin-right: 20px;
-
-    &__title {}
 
     &__elm {
         display: contents;
@@ -607,11 +537,6 @@ body {
         }
     }
 
-    &__pagesValues
-    {
-        
-    }
-
     &__allPages
     {
         width: 25px;
@@ -659,5 +584,38 @@ body {
                 border-color: white;
             }
         }
+    }
+}
+
+.myDatePicker
+{
+    width: 100%;
+    outline: 0;
+    border: 0;
+    border-bottom: 4px solid $delimiterColor_2;
+    transition: 0.3s;
+    padding-top: calc(0.8em + 10px);
+    box-sizing: content-box;
+    padding-left: 12px;
+
+    &:focus,&:focus-visible
+    {
+        outline: 0;
+        border-bottom-color: $mainColor_1;
+    }
+
+    &__container
+    {
+        position: relative;
+    }
+
+    &__label
+    {
+        position: absolute;
+        top: 5px;
+        left: 12px;
+        font-size: 0.8em;
+        height: 1em;
+        color: $delimiterColor_1;
     }
 }

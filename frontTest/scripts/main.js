@@ -18,15 +18,23 @@ window.onload = () => {
         );
     }
 
-    for (let iterator of document.querySelectorAll('.input')) {
-        iterator.querySelector('.input__input').addEventListener(
+    buildMyInput();
+}
+
+function buildMyInput(options = { 'baseClass': 'myInput', 'container': 'container', 'input': 'input' }) {
+    let baseClass = '.' + options.baseClass;
+    let containerClass = baseClass + '__' + options.container;
+    let inputClass = baseClass + '__' + options.input;
+
+    for (let iterator of document.querySelectorAll(baseClass)) {
+        iterator.querySelector(inputClass).addEventListener(
             'focus',
             (e) => {
                 e.currentTarget.nextElementSibling.classList.add('titledInput__text_active');
             }
         );
 
-        iterator.querySelector('.input__input').addEventListener(
+        iterator.querySelector(inputClass).addEventListener(
             'blur',
             (e) => {
                 if (e.currentTarget.value == '') {

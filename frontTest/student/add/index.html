@@ -1,122 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans:wght@800&display=swap"
-        rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=PT+Mono&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Lora&family=PT+Mono&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="/styles/style.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Open+Sans:wght@800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=PT+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@700&family=Lora&family=PT+Mono&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/styles/student.css" />
     <script src="/scripts/main.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="window">
-        <header class="header">
-            <h2 class="subTitle">
-                Добавить­ <br>
-                студента
-            </h2>
-            <nav class="formNavbar">
-                <a class="formNavbar__elm formNavbar__elm_active" href="#">
-                    <div class="formNavbar__text">ФИО</div>
-                    <div class="formNavbar__line__container">
-                        <hr class="formNavbar__line_active formNavbar__line_active_1">
-                        <hr class="formNavbar__line">
-                    </div>
-                </a>
-                <a class="formNavbar__elm" href="#">
-                    <div class="formNavbar__text formNavbar__elm_active">Оценки</div>
-                    <div class="formNavbar__line__container">
-                        <hr class="formNavbar__line_active formNavbar__line_active_1">
-                        <hr class="formNavbar__line">
-                    </div>
-                </a>
-                <a class="formNavbar__elm" href="#">
-                    <div class="formNavbar__text">Контакты</div>
-                    <div class="formNavbar__line__container">
-                        <hr class="formNavbar__line_active formNavbar__line_active_1">
-                        <hr class="formNavbar__line">
-                    </div>
-                </a>
-            </nav>
-        </header>
-
-        <div class="scores" style="display: none;">
-            <div class="scores_header">
-                <div class="scores_header_title">
-                    Оценки:
-                </div>
+      <header class="header">
+        <nav class="formNavbar">
+          <a class="formNavbar__elm formNavbar__elm_active" href="#">
+            <div class="formNavbar__text">Личные данные</div>
+            <div class="formNavbar__line__container">
+              <hr class="formNavbar__line_active formNavbar__line_active_1" />
+              <hr class="formNavbar__line" />
             </div>
-            <div class="score_block_container">
-                <div class="scores_block">
-                    <div class="scores_disciplineNameChose">
-                        <input class="scores_disciplineNameChoseInput" type="text" name="" id="">
-                    </div>
-                    <div class="scores_scoreChose">
-                        <input class="scores_scoreChose" type="text" name="" id="">
-                    </div>
-                    <div class="scores_deleteScore">
-                        <button class="scores_deleteScore_btn"></button>
-                    </div>
-                </div>
+          </a>
+          <a class="formNavbar__elm" href="#">
+            <div class="formNavbar__text formNavbar__elm_active">Аттестат</div>
+            <div class="formNavbar__line__container">
+              <hr class="formNavbar__line_active formNavbar__line_active_1" />
+              <hr class="formNavbar__line" />
             </div>
+          </a>
+          <a class="formNavbar__elm" href="#">
+            <div class="formNavbar__text">Контакты</div>
+            <div class="formNavbar__line__container">
+              <hr class="formNavbar__line_active formNavbar__line_active_1" />
+              <hr class="formNavbar__line" />
+            </div>
+          </a>
 
+          <a class="formNavbar__elm formNavbar__elm_active" href="#">
+            <div class="formNavbar__text">Специальность</div>
+            <div class="formNavbar__line__container">
+              <hr class="formNavbar__line_active formNavbar__line_active_1" />
+              <hr class="formNavbar__line" />
+            </div>
+          </a>
+        </nav>
+      </header>
+
+      <div class="scores" style="display: none">
+        <div class="scores_header">
+          <div class="scores_header_title">Оценки:</div>
         </div>
-        <div class="names">
-            <div class="group__title">
-                ФИО
+        <div class="score_block_container">
+          <div class="scores_block">
+            <div class="scores_disciplineNameChose">
+              <input
+                class="scores_disciplineNameChoseInput"
+                type="text"
+                name=""
+                id=""
+              />
             </div>
-
-            <div class="names__inputContainer">
-                <div class="input titledInput">
-                    <div class="input__container">
-                        <input type="text" name="" id="1" class="input__input">
-                        <label for="1" class="titledInput__text">Фамилия</label>
-                    </div>
-                </div>
-                <div class="input titledInput">
-                    <div class="input__container">
-                        <input type="text" name="" id="1" class="input__input">
-                        <label for="1" class="titledInput__text">Имя</label>
-                    </div>
-                </div>
-                <div class="input titledInput">
-                    <div class="input__container">
-                        <input type="text" name="" id="1" class="input__input">
-                        <label for="1" class="titledInput__text">Отчество</label>
-                    </div>
-                </div>
+            <div class="scores_scoreChose">
+              <input class="scores_scoreChose" type="text" name="" id="" />
             </div>
-
+            <div class="scores_deleteScore">
+              <button class="scores_deleteScore_btn"></button>
+            </div>
+          </div>
         </div>
-        <div class="contacts">
-            <div class="group__title">
-                Контакты
-            </div>
+      </div>
 
-            <div class="contacts__elm">
-                <div class="titledInput titledInputWithPrompt">
-                    <input type="text" name="" id="4" class="titledInput__input">
-                    <label for="4" class="titledInput__text">Тип контакта</label>
-                    <ul class="titledInputWithPrompt__promptContainer">
-                        <li class="titledInputWithPrompt__promptElement">Мать</li>
-                        <li class="titledInputWithPrompt__promptElement">Отец</li>
-                        <li class="titledInputWithPrompt__promptElement">Брат</li>
-                    </ul>
-                </div>
+      <div class="studentInfo">
+        <div class="studentInfo__container">
+          <div class="myInput titledInput">
+            <div class="myInput__container">
+              <input class="myInput__input" type="text" name="" id="" />
+              <label for="" class="titledInput__text">Фамилия</label>
             </div>
+          </div>
+
+          <div class="myInput titledInput">
+            <div class="myInput__container">
+              <input class="myInput__input" type="text" name="" id="" />
+              <label for="" class="titledInput__text">Имя</label>
+            </div>
+          </div>
+
+          <div class="myInput titledInput">
+            <div class="myInput__container">
+              <input class="myInput__input" type="text" name="" id="" />
+              <label for="" class="titledInput__text">Отчество</label>
+            </div>
+          </div>
         </div>
 
-        <button onclick="get()">Get</button>
+        <hr />
+
+        <div class="studentInfo__container">
+          <div class="myDatePicker__container">
+            <input type="date" name="" id="" class="myDatePicker" />
+            <label class="myDatePicker__label" for="">Дата рождения</label>
+          </div>
+
+          <div class="myInput titledInput">
+            <div class="myInput__container">
+              <input class="myInput__input" type="text" name="" id="" />
+              <label for="" class="titledInput__text">Паспорт</label>
+            </div>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="myInput titledInput">
+          <div class="myInput__container">
+            <input class="myInput__input" type="text" name="" id="" />
+            <label for="" class="titledInput__text">Адрес</label>
+          </div>
+        </div>
+
+        <a href="" class="nextBtn__container">
+          <div class="nextBtn__title">Аттестат</div>
+          <div class="nextBtn__icon"></div>
+        </a>
+      </div>
     </div>
-</body>
 
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>

@@ -649,4 +649,184 @@ body {
   height: 1em;
   color: #808080;
 }
-/*# sourceMappingURL=style.css.map */
+
+.studentInfo {
+  overflow: hidden;
+  height: auto;
+  width: 700px;
+  margin: 50px auto 0 auto;
+}
+
+.studentInfo > hr {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 30px 20px 15px 20px;
+}
+
+.studentInfo__container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.studentInfo__container > * {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  margin: 0 15px;
+}
+
+.studentInfo__container > *:first-child {
+  margin-left: 0;
+}
+
+.window {
+  max-width: 1000px;
+}
+
+.formNavbar {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-shadow: 0 0 15px #666666;
+          box-shadow: 0 0 15px #666666;
+  margin-left: -20px;
+  margin-top: -20px;
+  height: 100px;
+  padding: 0 15px;
+}
+
+.formNavbar__elm {
+  display: block;
+  text-decoration: none;
+  -webkit-box-flex: 150px;
+      -ms-flex: 150px;
+          flex: 150px;
+}
+
+.formNavbar__elm:hover .formNavbar__line {
+  width: 100%;
+}
+
+.formNavbar__elm:hover > .formNavbar__text {
+  text-shadow: 0 0 1px black, 0 0 1px black;
+}
+
+.formNavbar__text {
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  color: black;
+  font-family: 'PT Sans', monospace;
+  font-size: 1.7em;
+}
+
+.formNavbar__text::before {
+  content: "";
+  opacity: 0;
+}
+
+.formNavbar__line {
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  display: block;
+  border: 0;
+  width: 90%;
+  height: 5px;
+  background: #d4d4d4;
+  margin: 0 auto;
+  opacity: 1;
+}
+
+.formNavbar__line__container {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.formNavbar__line_active {
+  border: 0;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  height: 5px;
+  margin: 0;
+  background: linear-gradient(151deg, #20bf55 50%, #01efbc 100%);
+  opacity: 1;
+}
+
+.formNavbar__line_active_0 {
+  -webkit-animation: formNavbar__line_active 0.5s forwards;
+          animation: formNavbar__line_active 0.5s forwards;
+}
+
+.formNavbar__line_active_1 {
+  -webkit-animation: formNavbar__line_active 0.5s forwards;
+          animation: formNavbar__line_active 0.5s forwards;
+  animation-direction: reverse;
+}
+
+.nextBtn__container {
+  float: right;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 130px;
+  height: 47px;
+  border: 2px solid #20bf55;
+  background-color: white;
+  cursor: pointer;
+  margin: 60px;
+}
+
+.nextBtn__container:hover, .nextBtn__container:focus, .nextBtn__container:focus-visible {
+  background-color: #20bf55;
+  outline: 0;
+}
+
+.nextBtn__container:hover > .nextBtn__icon, .nextBtn__container:focus > .nextBtn__icon, .nextBtn__container:focus-visible > .nextBtn__icon {
+  border-left: 10px solid white;
+  margin-right: -13px;
+}
+
+.nextBtn__container:hover > .nextBtn__title, .nextBtn__container:focus > .nextBtn__title, .nextBtn__container:focus-visible > .nextBtn__title {
+  color: white;
+  margin-right: 10px;
+}
+
+.nextBtn__title {
+  color: #20bf55;
+  font-family: 'Open Sans';
+  font-size: 1em;
+  outline: 0;
+  border: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  z-index: 0;
+  float: left;
+}
+
+.nextBtn__icon {
+  float: right;
+  position: relative;
+  z-index: 1;
+  border: 10px solid transparent;
+  margin-right: -20px;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+/*# sourceMappingURL=student.css.map */

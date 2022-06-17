@@ -1,0 +1,17 @@
+{
+  "name": "frontTest",
+  "description": "",
+  "main": "",
+  "authors": [
+    "nikita-mlygin <nikita.malygin2017@mail.ru>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nikita-mlygin/studentEnrollment",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

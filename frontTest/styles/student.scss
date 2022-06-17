@@ -1,0 +1,170 @@
+@import './style.scss';
+
+.studentInfo
+{
+    overflow: hidden;
+    height: auto;
+    width: 700px;
+    margin: 50px auto 0 auto;
+
+    &>hr {
+        flex: 1;
+        margin: 30px 20px 15px 20px;
+    }
+
+    
+
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+
+        &>*
+        {
+            flex: 1;
+            margin: 0 15px;
+        }
+
+        &>*:first-child {
+            margin-left: 0;
+        }
+    }
+
+    
+}
+
+.window
+{
+    max-width: 1000px;
+}
+
+.formNavbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 0 15px $delimiterColor_4;
+    margin-left: -20px;
+    margin-top: -20px;
+    height: 100px;
+    padding: 0 15px;
+
+    &__elm {
+        display: block;
+        text-decoration: none;
+        flex: 150px;
+    }
+
+    &__elm:hover &__line {
+        width: 100%;
+    }
+
+    &__elm:hover>&__text {
+        text-shadow: 0 0 1px rgb(0, 0, 0), 0 0 1px rgb(0, 0, 0);
+    }
+
+    &__text {
+        transition: 0.3s;
+        color: black;
+        font-family: 'PT Sans', monospace;
+        font-size: 1.7em;
+
+        &::before {
+            content: "";
+            opacity: 0;
+        }
+    }
+
+    &__line {
+        transition: 0.5s;
+        display: block;
+        border: 0;
+        width: 90%;
+        height: 5px;
+        background: $delimiterColor_5;
+        margin: 0 auto;
+        opacity: 1;
+
+        &__container {
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        &_active {
+            border: 0;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            height: 5px;
+            margin: 0;
+            background: linear-gradient(151deg, rgba(32, 191, 85, 1) 50%, rgba(1, 239, 188, 1) 100%);
+            opacity: 1;
+
+            &_0 {
+
+                animation: formNavbar__line_active 0.5s forwards;
+            }
+
+            &_1 {
+
+                animation: formNavbar__line_active 0.5s forwards;
+                animation-direction: reverse;
+            }
+        }
+    }
+}
+
+.nextBtn
+{
+    &__container
+    {
+        float: right;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 130px;
+        height: 47px;
+        border: 2px solid $mainColor_1;
+        background-color: white;
+        cursor: pointer;
+        margin: 60px;
+
+        &:hover, &:focus, &:focus-visible
+        {
+            background-color: $mainColor_1;
+            outline: 0;
+
+            &>.nextBtn__icon {
+                border-left: 10px solid white;
+                margin-right: -13px;
+            }
+            
+            &>.nextBtn__title {
+                color: white;
+                margin-right: 10px;
+            }
+        }
+    }
+
+    &__title
+    {
+        color: $mainColor_1;
+        font-family: 'Open Sans';
+        font-size: 1em;
+        outline: 0;
+        border: 0;
+        transition: 0.3s;
+        z-index: 0;
+
+        float: left;
+    }
+
+    &__icon
+    {
+        float: right;
+        position: relative;
+        z-index: 1;
+        border: 10px solid transparent;
+        margin-right: -20px;
+        transition: 0.3s;
+    }
+}
